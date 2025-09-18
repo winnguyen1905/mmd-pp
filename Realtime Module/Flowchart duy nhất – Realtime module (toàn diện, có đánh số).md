@@ -2,10 +2,9 @@
 flowchart LR;
 
 %% === Clients ===
-subgraph CL["Clients"]
+subgraph Clients
   CA["Client A"];
   CB["Client B"];
-  CL["Client Apps"];
 end
 
 %% === Realtime Layer ===
@@ -39,18 +38,21 @@ CA -- "A1: Request room" --> RT0;
 CB -- "A1': Join room" --> RT0;
 RT0 -- "A2: Issue room token + ICE servers" --> CA;
 RT0 -- "A2': Issue room token + ICE servers" --> CB;
+
 CA -- "A3: SDP Offer (WS)" --> RT1;
 RT1 -- "A4: Deliver Offer" --> CB;
 CB -- "A5: SDP Answer (WS)" --> RT1;
 RT1 -- "A6: Deliver Answer" --> CA;
+
 CA -- "A7: Trickle ICE (candidates)" --> RT1;
 CB -- "A7': Trickle ICE (candidates)" --> RT1;
 RT1 -- "A8: Exchange candidates" --> CA;
 RT1 -- "A8': Exchange candidates" --> CB;
 
 %% ======== B. Connectivity & Media ========
-CA --- "B1: STUN binding/relay?" --- RT2;
-CB --- "B1': STUN binding/relay?" --- RT2;
+CA -- "B1: STUN binding/relay?" --> RT2;
+CB -- "B1': STUN binding/relay?" --> RT2;
+
 CA <-- "B2: DTLS handshake" --> CB;
 CA <-- "B3: SRTP media flow (P2P or via SFU/TURN)" --> CB;
 CA <-- "B4: Open DataChannels" --> CB;
@@ -58,8 +60,10 @@ CA <-- "B4: Open DataChannels" --> CB;
 %% ======== C. In-call control & overlay ========
 CA -- "C1: control msg (mute/swap/screen)" --> RT4a;
 CB -- "C1'" --> RT4a;
+
 CA -- "C2: overlay JSON (pointer/measure)" --> RT4b;
 CB -- "C2'" --> RT4b;
+
 CA -- "C3: Renegotiate (new track/SSRC)" --> RT1;
 RT1 -- "C4: Deliver renegotiation" --> CB;
 
@@ -77,12 +81,8 @@ OC1 -- "E2: store artifacts" --> OC2;
 OC1 --> DB;
 
 %% ======== F. Client ↔ Offchain (results) ========
-CL -- "F1: fetch reports/links" --> OC1;
+CA -- "F1: fetch reports/links" --> OC1;
+CB -- "F1'" --> OC1;
 
 %% ======== G. Optional: server-side capture ========
 RT7 -- "G1: capture keyframe (if not E2EE media)" --> RT5;
-
-%% Optional subgraph styling (uncomment if supported by your renderer)
-%% style RT fill:#0b7285,stroke:#0b7285,color:#fff
-%% style AI fill:#0b7285,stroke:#0b7285,color:#fff
-%% style OF fill:#0b7285,stroke:#0b7285,color:#fff

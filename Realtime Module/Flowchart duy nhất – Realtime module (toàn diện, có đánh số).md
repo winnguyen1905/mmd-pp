@@ -1,3 +1,16 @@
+Legend (ý nghĩa các bước chính)
+
+A1–A8: Thiết lập phòng và signaling (offer/answer + ICE).
+
+B1–B4: Kiểm tra kết nối NAT (STUN/TURN), bắt tay DTLS, luồng media SRTP, mở DataChannel.
+
+C1–C4: Điều khiển trong cuộc gọi (mute/screen) và đồng bộ overlay/đo đạc qua DataChannel; khi chia sẻ màn hình → renegotiation.
+
+D1–D4: Kích hoạt chụp snapshot/thu thập metrics; phát sự kiện vòng đời phiên.
+
+E1–E2: (Minh hoạ) Kết nối tối thiểu tới AI/CV & Offchain để tạo báo cáo.
+
+G1: (Tuỳ chọn) Ghi hình/capture phía server chỉ khi không yêu cầu E2EE media.
   ```mermaid
   flowchart LR;
   
@@ -88,17 +101,5 @@
   RT7 -- "G1: capture keyframe (if not E2EE media)" --> RT5;
   
 
-Legend (ý nghĩa các bước chính)
 
-A1–A8: Thiết lập phòng và signaling (offer/answer + ICE).
-
-B1–B4: Kiểm tra kết nối NAT (STUN/TURN), bắt tay DTLS, luồng media SRTP, mở DataChannel.
-
-C1–C4: Điều khiển trong cuộc gọi (mute/screen) và đồng bộ overlay/đo đạc qua DataChannel; khi chia sẻ màn hình → renegotiation.
-
-D1–D4: Kích hoạt chụp snapshot/thu thập metrics; phát sự kiện vòng đời phiên.
-
-E1–E2: (Minh hoạ) Kết nối tối thiểu tới AI/CV & Offchain để tạo báo cáo.
-
-G1: (Tuỳ chọn) Ghi hình/capture phía server chỉ khi không yêu cầu E2EE media.
   
